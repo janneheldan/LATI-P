@@ -67,7 +67,7 @@ def predict_passangers(temp, rain, day, month, day_of_week, is_holiday):
     returns: int (passangers)
     """
     path = os.path.dirname(os.path.abspath(__file__))
-    model = load(path + './weights/model_weights.joblib')
+    model = load(path + '/weights/model_weights.joblib')
     scaler = load(path + '/weights/scaler.joblib')
     X = scaler.transform([[temp, rain, day, month, day_of_week, is_holiday]])
     return model.predict(X)[0]
