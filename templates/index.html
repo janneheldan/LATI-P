@@ -3,66 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SL Päivittäiset Kävijämääräennusteet</title>
     <link rel="stylesheet" href="../static/style.css">
 </head>
-<body>
-    <div>
-        <h3 class="header center-content">LATI</h3>
-        <form action="/predict" method="post">
-            <label for="date">Date:</label>
-            <input type="date" name="date" id="date">
-            <br>
-            <label for="temp">Temperature:</label>
-            <input type="number" id="temp" name="temp" min="0" step="1">
-            <br>
-            <label for="water">Water Amount:</label>
-            <input type="number" id="water" name="water" min="0" step="0.01">
-            <input type="submit" value="Ennusta">
-        </form>
-    </div>
-   
-    <div class="center-content">
-        <div style="width: 800px;"><canvas id="myChart"></canvas></div>
-    </div>
+<body style = "background-color: rgb(245, 234, 221)">
+    <div class="container pt-3">
+        <div class="w-75 align-items-center mx-auto d-block">
+            <div class="card text-bg-dark">
+                <div class="card-header"></div>
+                <div class="card-body">
+                    <h4 class="card-title">Suomenlinnan Lautan Päivittäiset Kävijämääräennusteet</h4>
+                    <p>MLPR (Monikerrosperseptroniregressori) ennustaa Suomenlinnan lautalla kävijämäärään tulevina päivinä. Päivän ennuste ja päivän todellinen arvo eroavat merkittävästi toisistaan, koska tämän päivän kävijämäärä päivittyy vasta yöllä.</p>
+                    <p>Koulutus data:</p>
+                    <a href="https://hsl.louhin.com/lati/help" class="text-white">HSL Suomenlinnan lautan matkustajamäärät</a>
+                    <br>
+                    <a href="https://www.ilmatieteenlaitos.fi/havaintojen-lataus" class="text-white">Ilmatieteenlaitos avoin data</a>
+                    <br>
+                    <p>MLPR mallin tiedot:</p>
+                    <ul>
+                        <li>Neuronien määrä: (250, 200, 150, 20), Epochs: 2000, Batch size: 32, Solver: adam , Activation function: ReLU</li>
+                        <li>Model score (kerroin) = 0.759, MSE (keskimääräinen neliövirhe) = 1833.1</li>
+                    </ul>
+                </div>
+        </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center pt-3">
+            <div style="width: 950px;"><canvas id="myChart"></canvas></div>
+        </div>
 
+        <div class="center-content d-flex justify-content-center align-items-center pt-4">
+            <a href="https://github.com" style="text-decoration: none; color: black"><img src="../static/github.png" alt="github logo" width="30" height="30"> Lähdekoodi</a>
+        </div>
+    </div>
     <script
     src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     </script>
     <script>
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            datasets: [{
-                label: 'Kävijöiden määrä',
-                data: {{ predictions | tojson | safe }},  // Modify this line
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                ],
-                borderWidth: 1,
-                pointRadius: 5,
-                pointBackgroundColor: 'rgba(255, 99, 132, 1)'
-            }]
-        },
-        options: {
-            scales: {
-                xAxes: [{
-                    type: 'linear',
-                    position: 'bottom'
-                }],
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
+        var prediction = {{ prediction|tojson }};
+        var actual = {{ actual|tojson }};
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: prediction.dates,
+                datasets: [{
+                    label: 'Ennuste',
+                    data: prediction.predictions,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    fill: false,
+                    pointRadius: 5,
+                    pointHoverRadius: 10,
+                },
+                {
+                    label: 'Todellinen',
+                    data: actual.passangers,
+                    backgroundColor: 'rgba(99, 255, 132, 0.2)',
+                    borderColor: 'rgba(99, 255, 132, 1)',
+                    fill: false,
+                    showLine: false,
+                    pointRadius: 5,
+                    pointHoverRadius: 10,
                 }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            suggestedMax: 100
+                        }
+                    }]
+                }
             }
-        }
-    });
-</script>
-    <script src="../static/index.js"></script>
+        });
+    </script>
 </body>
 </html>

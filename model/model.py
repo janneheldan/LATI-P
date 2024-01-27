@@ -27,8 +27,8 @@ def train():
     model = MLPRegressor(hidden_layer_sizes=(250, 200, 150, 20), activation='relu', solver='adam', max_iter=2000, batch_size=32)
 
     model.fit(X_train_scaled, y_train)
-    dump(model, './weights/model_weights.joblib')
-    dump(scaler, './weights/scaler.joblib')
+    #dump(model, './weights/model_weights.joblib')
+    #dump(scaler, './weights/scaler.joblib')
     y_pred = model.predict(X_test_scaled)
 
     score = model.score(X_test_scaled, y_test)
@@ -55,6 +55,7 @@ def train():
     plt.yticks(())
     plt.show()
 
+
 def predict_passangers(temp, rain, day, month, day_of_week, is_holiday):
     """
     temp: float (C)
@@ -65,7 +66,9 @@ def predict_passangers(temp, rain, day, month, day_of_week, is_holiday):
     is_holiday: int (0 or 1) (False or True)
     returns: int (passangers)
     """
-    model = load('./weights/model_weights.joblib')
-    scaler = load('./weights/scaler.joblib')
+    path = os.path.dirname(os.path.abspath(__file__))
+    print(path)
+    model = load(path + '.\weights\model_weights.joblib')
+    scaler = load(path + '\weights\scaler.joblib')
     X = scaler.transform([[temp, rain, day, month, day_of_week, is_holiday]])
     return model.predict(X)[0]
