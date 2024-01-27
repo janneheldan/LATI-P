@@ -1,67 +1,54 @@
 /* For centering content */
+
+.header{
+    /* ...existing styles... */
+    font-family: 'Arial', sans-serif;  /* Add this line */
+    font-size: 24px;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
 .center-content {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* For hiding elements */
-.hidden {
-    display: none;
-}
+body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
 
-/* For showing elements as block */
-.block {
-    display: block;
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
-
-/* For text styling */
-.text-bold {
-    font-weight: bold;
+input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
-
-.text-italic {
-    font-style: italic;
+input[type="submit"]:hover {
+    background-color: #0056b3;
 }
-
-.text-large {
-    font-size: 1.5em;
+#myChart {
+    margin-top: 20px;
 }
+    form input[type="number"], form input[type="date"] {
+padding: 10px;
+width: 100%;
+max-width: 300px;
+margin-bottom: 10px;
+border-radius: 5px;
+border: 1px solid #ccc;
 
-.text-small {
-    font-size: 0.75em;
-}
-
-/* For margin and padding */
-.margin-10 {
-    margin: 10px;
-}
-
-.padding-10 {
-    padding: 10px;
-}
-
-/* For color styling */
-.bg-primary {
-    background-color: #007bff;
-}
-
-.text-primary {
-    color: #007bff;
-}
-
-.bg-secondary {
-    background-color: #6c757d;
-}
-
-.text-secondary {
-    color: #6c757d;
-}
-
-/* For responsive design */
-@media screen and (max-width: 600px) {
-    .responsive {
-        width: 100%;
-        height: auto;
-    }
 }
