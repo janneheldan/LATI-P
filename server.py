@@ -17,7 +17,6 @@ def index():
     json_data = json_data.get_json()
     return render_template('index.html', prediction=json_data['prediction'], actual=json_data['actual'])
 
-#@app.route('/forecast', methods=['GET'])
 def forecast():
     predictions = []
     prediction_dates = []
@@ -41,23 +40,6 @@ def forecast():
             actual_passangers.append(line[1])
 
     return jsonify({'actual': {'date': actual_days, 'passangers': actual_passangers},  'prediction': {'predictions': predictions, 'dates': prediction_dates}}) 
-
-@app.route('/predict', methods=['POST'])
-def predict_post():
-    date = request.form.get('date')
-    temp = request.form.get('temp')
-    rain = request.form.get('water')
-
-    date_parts = date.split('-')
-    year = int(date_parts[0])
-    month = int(date_parts[1])
-    day = int(date_parts[2])
-
-    day_of_week = datetime.datetime(year, month, day).weekday()
-    h = is_holiday(day, month, year, 'FI')
-    prediction = predict_passangers(float(temp), float(rain)/100, int(day), int(month), day_of_week, h)
-
-    return render_template('predict.html', prediction=prediction)
 
 def is_holiday(day, month, year, country):
     holiday = CountryHoliday(country)
@@ -124,4 +106,4 @@ def scheduled_job():
     daily_data_update()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
