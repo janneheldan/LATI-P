@@ -9,8 +9,11 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import StandardScaler
 from joblib import dump, load
 
-def train():
-    data = pd.read_csv('./data.csv', delimiter=',')
+def train(save_training):
+    """
+    save_training: bool, if True, saves the model weights and scaler
+    """
+    data = pd.read_csv('./data_filtered.csv', delimiter=',')
 
     X_train, X_test, y_train, y_test = train_test_split(
                                             data[['Temp[C]', 'Rain[mm]', 'Day', 'Month', 'DayOfWeek', 'IsHoliday']].values,
@@ -27,9 +30,12 @@ def train():
     model = MLPRegressor(hidden_layer_sizes=(250, 200, 150, 20), activation='relu', solver='adam', max_iter=2000, batch_size=32)
 
     model.fit(X_train_scaled, y_train)
-    #dump(model, './weights/model_weights.joblib')
-    #dump(scaler, './weights/scaler.joblib')
     y_pred = model.predict(X_test_scaled)
+
+    if save_training:
+        print("model weights and scaler saved")
+        dump(model, './weights/model_weights.joblib')
+        dump(scaler, './weights/scaler.joblib')
 
     score = model.score(X_test_scaled, y_test)
     mse = np.sqrt(mean_squared_error(y_test, y_pred))
@@ -49,12 +55,15 @@ def train():
     print('Coefficient of determination: %.2f' % r2_score(y_test, y_pred))
 
     # Plot outputs
-    plt.scatter(X_test[:,0], y_test,  color='black')
-    plt.scatter(X_test[:,0], y_pred, color='blue', linewidth=3)
-    plt.xticks(())
-    plt.yticks(())
-    plt.show()
+    plt.scatter(X_test[:,0], y_test,  color='black', label = 'Todellinen')
+    plt.scatter(X_test[:,0], y_pred, color='blue', label = 'Ennuste')
 
+    plt.xlabel("Lämpötila (C)")
+    plt.ylabel("Kävijämäärä")
+    plt.legend()
+    plt.savefig('./model.png')
+
+#train(True)
 
 def predict_passangers(temp, rain, day, month, day_of_week, is_holiday):
     """

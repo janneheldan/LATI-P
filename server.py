@@ -13,6 +13,7 @@ scheduler.start()
 
 @app.route('/', methods=['GET'])
 def index():
+    #daily_data_update()
     json_data = forecast()
     json_data = json_data.get_json()
     return render_template('index.html', prediction=json_data['prediction'], actual=json_data['actual'])
@@ -33,7 +34,7 @@ def forecast():
             predictions.append(predict_passangers(float(line[0]), float(line[1])/100, line[2], line[3], day_of_week, holi))
 
     with open('./data/past_passanger_data_merged.csv', 'r') as f:
-        data = f.readlines()[8:]
+        data = f.readlines()[5:]
         for i, line in enumerate(data):
             line = line.strip().split(';')
             actual_days.append(line[0])
@@ -55,6 +56,7 @@ def weather_forecast():
     df['time'] = pd.to_datetime(df['time'])
     df.set_index('time', inplace=True)
     df_daily = df.resample('D').agg({'temperature_2m': 'mean', 'rain': 'sum'})
+    print(df_daily.head())
     df_daily['day'] = df_daily.index.day
     df_daily['month'] = df_daily.index.month
     df_daily['year'] = df_daily.index.year
@@ -106,4 +108,4 @@ def scheduled_job():
     daily_data_update()
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
