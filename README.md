@@ -1,4 +1,4 @@
-# LATI-MLPR
+# ml-forecast-suomenlinna-ferry-visitors
 
 ### Model settings
 
