@@ -108,4 +108,5 @@ def scheduled_job():
     daily_data_update()
 
 if __name__ == '__main__':
+    daily_data_update()
     app.run()
