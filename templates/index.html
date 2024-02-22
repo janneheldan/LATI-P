@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SL Päivittäiset Kävijämääräennusteet</title>
+    <title>ml-forecast-suomenlinna-ferry-visitors</title>
     <link rel="stylesheet" href="../static/style.css">
 </head>
 <body style = "background-color: rgb(245, 234, 221)">
@@ -12,17 +12,18 @@
             <div class="card text-bg-dark">
                 <div class="card-header"></div>
                 <div class="card-body">
-                    <h4 class="card-title">Suomenlinnan Lautan Päivittäiset Kävijämääräennusteet</h4>
-                    <p>MLPR (Monikerrosperseptroniregressori) ennustaa Suomenlinnan lautalla kävijämäärään tulevina päivinä. Päivän ennuste ja päivän todellinen arvo eroavat merkittävästi toisistaan, koska tämän päivän kävijämäärä päivittyy vasta yöllä.</p>
-                    <p>Koulutus data:</p>
+                    <h4 class="card-title">ml-forecast-suomenlinna-ferry-visitors</h4>
+                    <p>MLPR model predicts the number of visitors to ferry in the coming days. The forecast for the day and the actual value significantly differ from each other because today's visitor count updates only during the night.</p>
+                    <p>Training data:</p>
                     <a href="https://hsl.louhin.com/lati/help" class="text-white">HSL Suomenlinnan lautan matkustajamäärät</a>
                     <br>
                     <a href="https://www.ilmatieteenlaitos.fi/havaintojen-lataus" class="text-white">Ilmatieteenlaitos avoin data</a>
                     <br>
-                    <p>MLPR mallin tiedot:</p>
+                    <p>MLPR model score:</p>
                     <ul>
-                        <li>Neuronien määrä: (250, 200, 150, 20), Epochs: 2000, Batch size: 32, Solver: adam , Activation function: ReLU</li>
-                        <li>Model score (kerroin) = 0.759, MSE (keskimääräinen neliövirhe) = 1833.1</li>
+                        <li>
+                            Model determination: 0.7988761759628186, Mean squared error: 1.54e+03 (30.6%), Coefficient of determination: 0.80,
+                        </li>
                     </ul>
                 </div>
         </div>
